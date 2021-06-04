@@ -30,7 +30,8 @@
                 <button class="btn btn-dark" name="modeConnect" value="on">Connecte/Inscription</button>
                 <?php } if(isset($_SESSION["userIdLog"])){?>
                     <form action="" method="post"><button class="btn btn-outline-dark" name="modeDeco" value="on">Se déconnecter</button></form>
-                    <form action="" method="post"><button class="btn btn-dark" type="submit" name="userId" value="<?php echo $_SESSION["userIdLog"] ?>">Profils de <?php echo $_SESSION["userIdLog"]; ?></button></form>
+                    <form action="" method="post"><button class="btn btn-dark" type="submit" name="userId" value="<?php echo $_SESSION["userIdLog"] ?>">Profils de <?php echo $_SESSION["userNameLog"]; ?></button></form>
+                    <form action="" method="post"><button class="btn btn-dark" type="submit">Céer un article</button></form>
                 <?php } ?>
             </form>
         </div>
@@ -116,16 +117,37 @@
         <p>Name = <?php echo $value["displayname"]; ?></p>
         <p>Username = <?php echo $value["username"]; ?></p>
         <p>Email = <?php echo $value["email"]; ?></p>
+        <p> Date de création : <?php echo $value["date"]; ?></p>
         <button class="btn btn-danger">Edit</button>
 <?php } } else { ?>
     <div class="container">
         <div class="row mt-5">
             <?php if(isset($_POST['postId'])){ ?>
                 <?php foreach($resultRequetePostsId as $value){ ?>
-                    <h1><?php echo $value["id"]; ?> : <?php echo $value["title"]; ?></h1>
+                    <h1><?php echo $value["id"];?> : <?php echo $value["title"]; ?></h1>
                     <p><?php echo $value["content"]; ?></p>
-                    <h6><?php echo $value["author"]; ?></h6>
-                <?php } }else{ ?>
+                    <h6> Ceer par : <?php
+                        $postUserId = $value["author"];
+                        $requetePostsUsers = "SELECT * FROM users WHERE id=$postUserId";
+                        $resultRequetePostsUsers = mysqli_query($connectDB, $requetePostsUsers);
+                        foreach($resultRequetePostsUsers as $valueUsers){
+                            echo $valueUsers["username"];
+                        } ?></h6>
+                    <p> Date de création : <?php echo $value["date"]; ?></p>
+                    <form method="post"><button class="btn btn-outline-danger" type="submit">retour</button></form>
+                    <?php if (isset($_SESSION["userIdLog"]) && $postUserId == $_SESSION["userIdLog"]) { ?>
+                        <form method="post"><button class="btn btn-danger" type="submit" name="modeEdit" value="<?php echo $value["id"]; ?>">Edit</button></form>
+                    <?php } } }else if($modeEdit == true) {
+                foreach($resultRequetePostsIdEdit as $value){?>
+                    <form action="" method="post">
+                        <input type="hidden" name="idEditUp" value="<?php echo $value['id'] ?>">
+                        <input class="form-control" type="text" name="titleEditUp" id="" value="<?php echo $value['title'] ?>" placeholder="votre titre">
+                        <textarea class="form-control" name="contentEditUp" id="" cols="30" rows="10" placeholder="votre texte"><?php echo $value['content'] ?></textarea>
+                        <input class="form-control btn btn-danger" type="submit" value="Enregistrer les modifications">
+                    </form>
+               <?php }
+
+            } else { ?>
                 <h1> Voici les article du site</h1>
                 <?php foreach($resultRequetePosts as $value){ ?>
                     <div class="col-4">
@@ -133,7 +155,18 @@
                             <div class="card-header"><?php echo $value["id"]; ?> : <?php echo $value["title"]; ?></div>
                             <div class="card-body">
                                 <p class="card-text"><?php echo $value["content"]; ?></p>
-                                <p class="card-text"><?php echo $value["author"]; ?></p>
+                                <h6 class="card-text"> Ceer par : <?php
+                                    $postUserId = $value["author"];
+
+                                    $requetePostsUsers = "SELECT * FROM users WHERE id=$postUserId";
+
+                                    $resultRequetePostsUsers = mysqli_query($connectDB, $requetePostsUsers);
+
+                                    foreach($resultRequetePostsUsers as $valueUsers){
+                                        echo $valueUsers["username"];
+                                    }
+                                    ?></h6>
+                                <p><?php echo $value["date"]; ?></p>
                             </div>
                             <form method="POST">
                                 <button class="btn btn-danger" type="submit" name="postId" value="<?php echo $value['id'] ?>">Aller à l'article</button>
