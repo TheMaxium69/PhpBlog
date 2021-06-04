@@ -15,6 +15,7 @@ if (isset($_POST['username']) && isset($_POST['password'])){
             require_once "base.php";
             if( md5($passwordEntre).md5($key) == $vraiMotDePasse  ){
                 $isLogged = true;
+                $_SESSION["userIdLog"]= $userId;
             }else{
                 echo "mauvais mot de passe, $usernameEntre";
             }

@@ -26,11 +26,11 @@
                 </li>
             </ul>
             <form method="POST" class="d-flex">
-                <?php if(!$isLogged && !$modeInscription){ ?>
+                <?php if(!$isLogged && !$modeInscription && !isset($_SESSION["userIdLog"])){ ?>
                 <button class="btn btn-dark" name="modeConnect" value="on">Connecte/Inscription</button>
-                <?php } if($isLogged){?>
-                    <form action="" method="post"><button class="btn btn-outline-dark" type="submit">Se déconnecter</button></form>
-                    <form action="" method="post"><button class="btn btn-dark" type="submit" name="userId" value="<?php echo $userId ?>">Profils de <?php echo $userName; ?></button></form>
+                <?php } if(isset($_SESSION["userIdLog"])){?>
+                    <form action="" method="post"><button class="btn btn-outline-dark" name="modeDeco" value="on">Se déconnecter</button></form>
+                    <form action="" method="post"><button class="btn btn-dark" type="submit" name="userId" value="<?php echo $_SESSION["userIdLog"] ?>">Profils de <?php echo $_SESSION["userIdLog"]; ?></button></form>
                 <?php } ?>
             </form>
         </div>

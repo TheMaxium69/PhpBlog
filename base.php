@@ -4,6 +4,7 @@ $connectDB = mysqli_connect($hostDB, $userDB, $passwordDB, $nameDB);
 require_once "private/salt.php";
 $key = $salt;
 
+session_start();
 
 $modeInscription = false;
 $isLogged = false;
@@ -16,6 +17,9 @@ if(isset($_POST['modeConnect']) && $_POST['modeConnect']== "on"){
 }
 if(isset($_POST['modeInscription']) && $_POST['modeInscription']== "on"){
     $modeInscription = true;
+}
+if(isset($_POST['modeDeco']) && $_POST['modeDeco']== "on"){
+    session_unset();
 }
 
 if($modeInscription){
