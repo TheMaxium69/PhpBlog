@@ -19,8 +19,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
+
                     <form method="POST" class="d-flex">
-                            <button class="btn btn-outline-dark">Home</button>
+                        <button class="btn btn-outline-dark">Home</button>
                     </form>
                 </li>
             </ul>
@@ -29,7 +30,7 @@
                 <button class="btn btn-dark" name="modeConnect" value="on">Connecte/Inscription</button>
                 <?php } if($isLogged){?>
                     <form action="" method="post"><button class="btn btn-outline-dark" type="submit">Se déconnecter</button></form>
-                <button class="btn btn-dark" href="connect">Profils</button>
+                    <form action="" method="post"><button class="btn btn-dark" type="submit" name="userId" value="<?php echo $userId ?>">Profils de <?php echo $userId; ?></button></form>
                 <?php } ?>
             </form>
         </div>
@@ -42,7 +43,7 @@
     <p class='mb-0'>Probleme de connection à la base de données.</p>
 </div>
 <?php die(); } ?>
-    <?php if(isset($_GET['info']) && $_GET['info']== "registered"){ ?>
+    <?php /*if(isset($_GET['info']) && $_GET['info']== "registered"){ ?>
         <div class="alert alert-success" role="alert">
             Successfully registered !
         </div>
@@ -51,7 +52,7 @@
         <div class="alert alert-success" role="alert">
             Successfully login !
         </div>
-    <?php }?>
+    <?php }*/ ?>
 
 
 <?php if($modeConnect == true) { ?>
@@ -110,9 +111,38 @@
         <input type="hidden" name="modeConnect" value="on"></input>
         <button class="btn btn-outline-danger" name="modeInscription" value="off">Se connecter</button>
     </form>
-<?php } else { ?>
-<h1> Voici les article du site</h1>
-
+<?php } else if (isset($_POST['userId'])) {?>
+    <?php foreach($resultRequeteUserId as $value){ ?>
+        <p>Name = <?php echo $value["displayname"]; ?></p>
+        <p>Username = <?php echo $value["username"]; ?></p>
+        <p>Email = <?php echo $value["email"]; ?></p>
+        <button class="btn btn-danger">Edit</button>
+<?php } } else { ?>
+    <div class="container">
+        <div class="row mt-5">
+            <?php if(isset($_POST['postId'])){ ?>
+                <?php foreach($resultRequetePostsId as $value){ ?>
+                    <h1><?php echo $value["id"]; ?> : <?php echo $value["title"]; ?></h1>
+                    <p><?php echo $value["content"]; ?></p>
+                    <h6><?php echo $value["author"]; ?></h6>
+                <?php } }else{ ?>
+                <h1> Voici les article du site</h1>
+                <?php foreach($resultRequetePosts as $value){ ?>
+                    <div class="col-4">
+                        <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+                            <div class="card-header"><?php echo $value["id"]; ?> : <?php echo $value["title"]; ?></div>
+                            <div class="card-body">
+                                <p class="card-text"><?php echo $value["content"]; ?></p>
+                                <p class="card-text"><?php echo $value["author"]; ?></p>
+                            </div>
+                            <form method="POST">
+                                <button class="btn btn-danger" type="submit" name="postId" value="<?php echo $value['id'] ?>">Aller à l'article</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php } }?>
+        </div>
+    </div>
 <?php } ?>
 
 

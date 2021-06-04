@@ -9,11 +9,12 @@ if (isset($_POST['username']) && isset($_POST['password'])){
         if(  $leResultatDeMaRequeteLogin->num_rows == 1){
             foreach( $leResultatDeMaRequeteLogin as $value){
                 $vraiMotDePasse =  $value['password'];
+                $userId =  $value['id'];
+                $userName =  $value['displayname'];
             }
             require_once "base.php";
             if( md5($passwordEntre).md5($key) == $vraiMotDePasse  ){
                 $isLogged = true;
-                
             }else{
                 echo "mauvais mot de passe, $usernameEntre";
             }
