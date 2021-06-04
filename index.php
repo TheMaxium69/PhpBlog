@@ -145,6 +145,10 @@
                         <textarea class="form-control" name="contentEditUp" id="" cols="30" rows="10" placeholder="votre texte"><?php echo $value['content'] ?></textarea>
                         <input class="form-control btn btn-danger" type="submit" value="Enregistrer les modifications">
                     </form>
+                    <form action="" method="post">
+                        <input type="hidden" name="idEditSupp" value="<?php echo $value['id'] ?>">
+                        <input class="form-control btn btn-danger" type="submit" value="Supprimé">
+                    </form>
                <?php }
 
             } else { ?>

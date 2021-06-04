@@ -38,6 +38,14 @@ if(isset($_POST['idEditUp']) && isset($_POST['titleEditUp']) && isset($_POST['co
     $resultUpdate = mysqli_query($connectDB, $requeteUpdate);
 
 }
+if(isset($_POST['idEditSupp'])){
+
+    $idEditSupp = $_POST['idEditSupp'];
+    $requeteSupp = "DELETE FROM `posts` WHERE `id`='$idEditSupp'";
+
+    $resultSupp = mysqli_query($connectDB, $requeteSupp);
+
+}
 if($modeInscription){
     require_once "connect/signup.php";
 }
