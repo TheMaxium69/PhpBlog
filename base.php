@@ -19,7 +19,7 @@ if(isset($_POST['modeInscription']) && $_POST['modeInscription']== "on"){
 }
 if(isset($_POST['modeDeco']) && $_POST['modeDeco']== "on"){
     session_unset();
-}
+}   
 
 if(isset($_POST['modeEdit']) && $_POST['modeEdit']){
     $modeEdit = true;
