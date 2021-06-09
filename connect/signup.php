@@ -30,7 +30,5 @@ if(isset($_POST['usernameSignUp']) && isset($_POST['displayNameSignUp']) && isse
     }else{
         echo "il manque des trucs dans le formulaire";
     }
-}else{
-    echo "il manque des trucs";
 }
 ?>

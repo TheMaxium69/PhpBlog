@@ -1,4 +1,6 @@
-<?php include "base.php"?>
+<?php include "base.php";
+//var_dump($_POST);
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -126,10 +128,8 @@
         <p> Date de création : <?php echo $value["date"]; ?></p>
         <?php
         if (isset($_SESSION["userIdLog"]) && isset($_POST['userId']) && $_SESSION["userIdLog"] == $_POST['userId']){ ?>
-            <button class="btn btn-outline-danger">Edit</button>
-            <form method="POST" class="d-flex">
-                <button class="btn btn-danger">Retour</button>
-            </form>
+            <form method="POST" class="d-flex"><button type="submit" name="modeUserEdit" value="on" class="btn btn-danger">Edit</button></form>
+            <form method="POST" class="d-flex"><button class="btn btn-danger">Retour</button></form>
         <?php } else if (isset($_GET['profile']) ){ ?>
         <form method="GET"><input class="btn btn-danger" type="submit" value="Retour"> </input></form>
 <?php } } } else { ?>
@@ -206,7 +206,6 @@
             } else if (isset($_POST['modeCreate'])){?>
                 <h3>Créer un post ici</h3>
                 <form method="post">
-
                     <input type="hidden" name="authorIdCreate" value="<?php echo $_SESSION["userIdLog"] ?>">
                     <div class="form-group">
                         <label for="username">Title</label>
@@ -220,8 +219,47 @@
                         <input type="submit" value="Create" class="btn btn-outline-light">
                     </div>
                 </form>
-
-            <?php } else { ?>
+            <?php } else if (isset($_POST['modeUserEdit'])){
+                     foreach($resultRequeteUserIdEdit as $value){ ?>
+                         <h3>Edit Mail and Diplay name</h3>
+                         <form method="post">
+                             <input type="hidden" name="userIdEditMD" value="<?php echo $_SESSION["userIdLog"] ?>">
+                             <div class="form-group">
+                                 <label for="username">Mail</label>
+                                 <input type="text" class="form-control" name="userMailEdit" value="<?php echo $value["email"] ?>">
+                             </div>
+                             <div class="form-group">
+                                 <label for="username">diplay name</label>
+                                 <input type="text" class="form-control" name="userNameEdit" value="<?php echo $value["displayname"] ?>">
+                             </div>
+                             <div class="form-group">
+                                 <label for="username">Mot de passe</label>
+                                 <input type="password" class="form-control" name="mdpConfirme" placeholder="Confirmer votre mot de passe">
+                             </div>
+                             <div class="form-group">
+                                 <input type="submit" value="Mettre a jour" class="btn btn-outline-danger">
+                             </div>
+                         </form>
+                         <h3>Changer mot de passe</h3>
+                         <form method="post">
+                             <input type="hidden" name="userIdEditMdp" value="<?php echo $_SESSION["userIdLog"] ?>">
+                             <div class="form-group">
+                                 <label for="username">Ancien mot de pase</label>
+                                 <input type="password" class="form-control" name="OldMdp" placeholder="Ancien mot de pase">
+                             </div>
+                             <div class="form-group">
+                                 <label for="username">Nouveau mots de passe</label>
+                                 <input type="password" class="form-control" name="NewMdp" placeholder="Nouveau mots de passe">
+                             </div>
+                             <div class="form-group">
+                                 <label for="username">Confirmer nouveau mot de passe</label>
+                                 <input type="password" class="form-control" name="CNewMdp" placeholder="Confirmer nouveau mot de passe">
+                             </div>
+                             <div class="form-group">
+                                 <input type="submit" value="Changez de mots de passe" class="btn btn-outline-danger">
+                             </div>
+                         </form>
+            <?php  } } else { ?>
                 <h1> Voici les article du site</h1>
                 <?php foreach($resultRequetePosts as $value){ ?>
                     <div class="col-4">
@@ -251,7 +289,5 @@
         </div>
     </div>
 <?php } ?>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script></body>
 </html>
