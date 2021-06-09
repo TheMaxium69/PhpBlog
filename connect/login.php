@@ -19,6 +19,7 @@ if (isset($_POST['username']) && isset($_POST['password'])){
                 $_SESSION["userIdLog"]= $userId;
                 $_SESSION["userNameLog"]= $userName;
                 $_SESSION["userDisNameLog"]= $userDisName;
+                header("location: index.php?info=login");
             }else{
                 echo "mauvais mot de passe, $usernameEntre";
             }

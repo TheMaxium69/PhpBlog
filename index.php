@@ -52,7 +52,7 @@
     <p class='mb-0'>Probleme de connection à la base de données.</p>
 </div>
 <?php die(); } ?>
-    <?php /*if(isset($_GET['info']) && $_GET['info']== "registered"){ ?>
+    <?php if(isset($_GET['info']) && $_GET['info']== "registered"){ ?>
         <div class="alert alert-success" role="alert">
             Successfully registered !
         </div>
@@ -61,7 +61,7 @@
         <div class="alert alert-success" role="alert">
             Successfully login !
         </div>
-    <?php }*/ ?>
+    <?php } ?>
 
 
 <?php if($modeConnect == true) { ?>
