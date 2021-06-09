@@ -19,10 +19,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-
-                    <form method="POST" class="d-flex">
+                    <?php if(isset($_GET['postId']) || isset($_GET['profile'])){ ?>
+                    <form method="GET" class="d-flex">
                         <button class="btn btn-outline-dark">Home</button>
                     </form>
+                    <?php } else { ?>
+                        <form method="POST" class="d-flex">
+                            <button class="btn btn-outline-dark">Home</button>
+                        </form>
+                    <?php } ?>
                 </li>
             </ul>
             <form method="POST" class="d-flex">
@@ -31,7 +36,8 @@
                 <?php } if(isset($_SESSION["userIdLog"])){?>
                     <form action="" method="post"><button class="btn btn-outline-dark" name="modeDeco" value="on">Se déconnecter</button></form>
                     <form action="" method="post"><button class="btn btn-dark" type="submit" name="userId" value="<?php echo $_SESSION["userIdLog"] ?>">Profils de <?php echo $_SESSION["userNameLog"]; ?></button></form>
-                    <form action="" method="post"><button class="btn btn-dark" type="submit">Céer un article</button></form>
+                    <form action="" method="post"><button class="btn btn-dark" type="submit" name="modeCreate" value="on">Céer un article</button></form>
+                    <form action="" method="POST"><button type="submit" name="myPosts" class="btn btn-dark" >Mes Posts</button></form>
                 <?php } ?>
             </form>
         </div>
@@ -112,17 +118,24 @@
         <input type="hidden" name="modeConnect" value="on"></input>
         <button class="btn btn-outline-danger" name="modeInscription" value="off">Se connecter</button>
     </form>
-<?php } else if (isset($_POST['userId'])) {?>
+<?php } else if (isset($_POST['userId']) || isset($_GET['profile']) ) {?>
     <?php foreach($resultRequeteUserId as $value){ ?>
         <p>Name = <?php echo $value["displayname"]; ?></p>
         <p>Username = <?php echo $value["username"]; ?></p>
         <p>Email = <?php echo $value["email"]; ?></p>
         <p> Date de création : <?php echo $value["date"]; ?></p>
-        <button class="btn btn-danger">Edit</button>
-<?php } } else { ?>
+        <?php
+        if (isset($_SESSION["userIdLog"]) && isset($_POST['userId']) && $_SESSION["userIdLog"] == $_POST['userId']){ ?>
+            <button class="btn btn-outline-danger">Edit</button>
+            <form method="POST" class="d-flex">
+                <button class="btn btn-danger">Retour</button>
+            </form>
+        <?php } else if (isset($_GET['profile']) ){ ?>
+        <form method="GET"><input class="btn btn-danger" type="submit" value="Retour"> </input></form>
+<?php } } } else { ?>
     <div class="container">
         <div class="row mt-5">
-            <?php if(isset($_POST['postId'])){ ?>
+            <?php if(isset($_POST['postId']) || isset($_GET['postId'])){ ?>
                 <?php foreach($resultRequetePostsId as $value){ ?>
                     <h1><?php echo $value["id"];?> : <?php echo $value["title"]; ?></h1>
                     <p><?php echo $value["content"]; ?></p>
@@ -130,13 +143,13 @@
                         $postUserId = $value["author"];
                         $requetePostsUsers = "SELECT * FROM users WHERE id=$postUserId";
                         $resultRequetePostsUsers = mysqli_query($connectDB, $requetePostsUsers);
-                        foreach($resultRequetePostsUsers as $valueUsers){
-                            echo $valueUsers["username"];
-                        } ?></h6>
+                        foreach($resultRequetePostsUsers as $valueUsers){ ?>
+                            <a style="color: white" href="index.php?profile=<?php echo $valueUsers["id"] ?>"> <?php echo $valueUsers["username"] ?></a>
+                            <?php } ?></h6>
                     <p> Date de création : <?php echo $value["date"]; ?></p>
-                    <form method="post"><button class="btn btn-outline-danger" type="submit">retour</button></form>
+                    <form method="GET"><button class="btn btn-outline-danger" type="submit">retour</button></form>
                     <?php if (isset($_SESSION["userIdLog"]) && $postUserId == $_SESSION["userIdLog"]) { ?>
-                        <form method="post"><button class="btn btn-danger" type="submit" name="modeEdit" value="<?php echo $value["id"]; ?>">Edit</button></form>
+                        <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modeEdit" value="<?php echo $value["id"]; ?>">Edit</button></form>
                     <?php } } }else if($modeEdit == true) {
                 foreach($resultRequetePostsIdEdit as $value){?>
                     <form action="" method="post">
@@ -151,7 +164,64 @@
                     </form>
                <?php }
 
-            } else { ?>
+            } else if (isset($_POST['myPosts'])){?>
+                <h1 class="card-text"> Post de  : <?php
+                            $postUserId = $_SESSION["userIdLog"];
+
+                            $requetePostsUsers = "SELECT * FROM users WHERE id=$postUserId";
+
+                            $resultRequetePostsUsers = mysqli_query($connectDB, $requetePostsUsers);
+
+                            foreach($resultRequetePostsUsers as $valueUsers){
+                                echo $valueUsers["username"];
+                            }
+                            ?></h1>
+                <?php foreach($resultRequetePosts as $value){ ?>
+                    <?php if ($value["author"] == $_SESSION["userIdLog"]) {?>
+
+                    <div class="col-4">
+                        <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+                            <div class="card-header"><?php echo $value["id"]; ?> : <?php echo $value["title"]; ?></div>
+                            <div class="card-body">
+                                <p class="card-text"><?php echo $value["content"]; ?></p>
+                                <h6 class="card-text"> Ceer par : <?php
+                                    $postUserId = $value["author"];
+
+                                    $requetePostsUsers = "SELECT * FROM users WHERE id=$postUserId";
+
+                                    $resultRequetePostsUsers = mysqli_query($connectDB, $requetePostsUsers);
+
+                                    foreach($resultRequetePostsUsers as $valueUsers){?>
+                                        <a style="color: white" href="index.php?profile=<?php echo $valueUsers["id"] ?>"> <?php echo $valueUsers["username"] ?></a>
+                                    <?php }
+                                    ?></h6>
+                                <p><?php echo $value["date"]; ?></p>
+                            </div>
+                            <form method="POST">
+                                <button class="btn btn-danger" type="submit" name="postId" value="<?php echo $value['id'] ?>">Aller à l'article</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php } }
+            } else if (isset($_POST['modeCreate'])){?>
+                <h3>Créer un post ici</h3>
+                <form method="post">
+
+                    <input type="hidden" name="authorIdCreate" value="<?php echo $_SESSION["userIdLog"] ?>">
+                    <div class="form-group">
+                        <label for="username">Title</label>
+                        <input type="text" class="form-control" name="titleCreate">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Content</label>
+                        <input type="text" class="form-control" name="contentCreate">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-outline-light">
+                    </div>
+                </form>
+
+            <?php } else { ?>
                 <h1> Voici les article du site</h1>
                 <?php foreach($resultRequetePosts as $value){ ?>
                     <div class="col-4">
@@ -166,13 +236,13 @@
 
                                     $resultRequetePostsUsers = mysqli_query($connectDB, $requetePostsUsers);
 
-                                    foreach($resultRequetePostsUsers as $valueUsers){
-                                        echo $valueUsers["username"];
-                                    }
+                                    foreach($resultRequetePostsUsers as $valueUsers){?>
+                                        <a style="color: white" href="index.php?profile=<?php echo $valueUsers["id"] ?>"> <?php echo $valueUsers["username"] ?></a>
+                                    <?php }
                                     ?></h6>
                                 <p><?php echo $value["date"]; ?></p>
                             </div>
-                            <form method="POST">
+                            <form method="GET">
                                 <button class="btn btn-danger" type="submit" name="postId" value="<?php echo $value['id'] ?>">Aller à l'article</button>
                             </form>
                         </div>

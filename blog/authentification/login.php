@@ -37,7 +37,13 @@ echo "login fonctionnel";
                                                       
                                 $vraiMotDePasse =  $value['password'];
                                 $userId = $value['id'];
-                             
+                                $displayName = $value['display_name'];
+
+                                $username = $value['username'];
+                              
+                                
+                                    
+                                
                                 
                        }
                        require_once dirname(__FILE__)."/../access/salt.php";
@@ -47,8 +53,12 @@ echo "login fonctionnel";
                             $isLoggedIn = true;
                            
                             $_SESSION['userId'] = $userId;  
+                            $_SESSION['username'] = $username;
+                            $_SESSION['displayName'] = $displayName;
+                           
                             
                             echo "LOGGED IN";
+                           
 
 
                         }else{

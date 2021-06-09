@@ -17,85 +17,8 @@ require "blog/logique.php";
 </head>
 <body>
    
+<?php require_once "navbar.php" ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/hb/blog">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-tarPOST="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarColor02">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Home
-            <span class="visually-hidden">(current)</span>
-          </a>
-        </li>
-        <?php if($isLoggedIn){?>
-
-        <li class="nav-item">
-          <a class="nav-link" href="blog/creation.php">Nouveau post</a>
-        </li>
-        <li>
-        
-        <form method="POST" class="d-flex">
- 
-  <button type="submit" name="myPosts" class="btn btn-secondary my-2 my-sm-0" >Mes Posts</button>
-</form>
-
-        
-        </li>
-                <?php } ?>
-      
-      </ul>
-      <?php if(!$isLoggedIn && !$modeInscription){ ?>
-        <form method="POST" class="d-flex align-items-center">
-
-            <div class="form-group">
-                <label for="username">Username</label>
-
-                <input type="text" class="form-control" name="username" required>
-            </div>
-            <div class="form-group">
-            <label for="password">password</label>
-
-                <input type="password" class="form-control" name="password" required>
-            </div>        
-        
-                <div class="form-group">
-                 <input type="submit" value="Log in" class="btn btn-success">
-                </div>
-        </form>
-      
-
-<hr>
-        <?php }?>
-
-        <?php if($isLoggedIn){?>
-
-
-
-<form method="POST" class="d-flex">
- 
-  <button type="submit" name="logOut" class="btn btn-secondary my-2 my-sm-0" >Deconnexion</button>
-</form>
-
-<? }?>
-
-
-      <?php if(!$modeInscription && !$isLoggedIn){?>
-
-
-
-      <form method="POST" class="d-flex">
-       
-        <button type="submit" name="modeInscription" value="on" class="btn btn-secondary my-2 my-sm-0" type="submit">Inscription</button>
-      </form>
-      <? }?>
-    </div>
-  </div>
-</nav>
 <?php if(isset($_GET['info']) && $_GET['info']== "registered"){ ?>
 
 <div class="alert alert-success" role="alert">
@@ -116,6 +39,13 @@ Successfully registered !
 <div class="alert alert-dismissible alert-danger">
   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   <strong>Well done!</strong> You successfully deleted <a href="#" class="alert-link">this article</a>.
+</div>
+<?php } ?>
+<?php if( isset($_GET['info']) && $_GET['info'] == 'pasLeDroit' ){?>
+
+<div class="alert alert-dismissible alert-danger">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Nope</strong> Vous n'avez pas le droit de supprimer cet article <a href="#" class="alert-link">this article</a>.
 </div>
 <?php } ?>
 
@@ -164,7 +94,7 @@ Successfully registered !
                             <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
                             <div class="card-header"><?php echo $post["title"]; ?></div>
                             <div class="card-body">
-                                <h4 class="card-title">Auteur : <?php echo $post["author_id"] ?></h4>
+                               <h4 style="color : black" class="card-title"><a style="color : black" href="<?php echo $racineSite ?>/blog/profile.php?profile=<?php echo $post['author'] ?>"> Auteur : <?php echo $post["author"] ?></a></h4>
                                 <p class="card-text"><?php echo $post["content"]; ?></p>
                             </div>
                             

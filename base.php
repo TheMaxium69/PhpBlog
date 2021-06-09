@@ -10,6 +10,7 @@ $modeInscription = false;
 $isLogged = false;
 $modeConnect = false;
 $modeEdit = false;
+$modeCreate = false;
 
 if(isset($_POST['modeConnect']) && $_POST['modeConnect']== "on"){
     $modeConnect = true;
@@ -19,7 +20,10 @@ if(isset($_POST['modeInscription']) && $_POST['modeInscription']== "on"){
 }
 if(isset($_POST['modeDeco']) && $_POST['modeDeco']== "on"){
     session_unset();
-}   
+}
+if(isset($_POST['$modeCreate']) && $_POST['$modeCreate']== "on"){
+    $modeCreate = true;
+}
 
 if(isset($_POST['modeEdit']) && $_POST['modeEdit']){
     $modeEdit = true;
@@ -36,6 +40,17 @@ if(isset($_POST['idEditUp']) && isset($_POST['titleEditUp']) && isset($_POST['co
     $requeteUpdate = "UPDATE posts SET title  = '$titleEditUp', content = '$contentEditUp' WHERE id = $idEditUp";
 
     $resultUpdate = mysqli_query($connectDB, $requeteUpdate);
+
+}
+if(isset($_POST['authorIdCreate']) && isset($_POST['titleCreate']) && isset($_POST['contentCreate'])){
+
+    $authorIdCreate = $_POST['authorIdCreate'];
+    $titleCreate = $_POST['titleCreate'];
+    $contentCreate = $_POST['contentCreate'];
+
+    $requeteCreate = "INSERT INTO posts(title, content, author) VALUES ('$titleCreate', '$contentCreate', '$authorIdCreate')";
+
+    $resultCreate = mysqli_query($connectDB, $requeteCreate);
 
 }
 if(isset($_POST['idEditSupp'])){
@@ -63,6 +78,15 @@ if (isset($_POST['userId'])) {
     $resultRequeteUserId = mysqli_query($connectDB, $requeteUserId);
 }
 
+if (isset($_GET['profile'])) {
+
+    $userId = $_GET['profile'];
+
+    $requeteUserId = "SELECT * FROM users WHERE id=$userId";
+
+    $resultRequeteUserId = mysqli_query($connectDB, $requeteUserId);
+}
+
 if(isset($_POST['postId'])){
 
     $postId = $_POST['postId'];
@@ -71,7 +95,15 @@ if(isset($_POST['postId'])){
 
     $resultRequetePostsId = mysqli_query($connectDB, $requetePostsId);
 
-}else{
+} else if(isset($_GET['postId'])){
+
+    $postId = $_GET['postId'];
+
+    $requetePostsId = "SELECT * FROM posts WHERE id=$postId";
+
+    $resultRequetePostsId = mysqli_query($connectDB, $requetePostsId);
+
+} else{
 
     $requetePosts = "SELECT * FROM posts";
 

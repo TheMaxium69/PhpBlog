@@ -5,21 +5,63 @@ if(isset($_POST['logOut'])){
    session_unset();
 } 
 
+$racineSite = "http://localhost/hb/blog";
+
 
 require_once dirname(__FILE__)."/../authentification/auth.php";
 require_once dirname(__FILE__)."/../access/db.php";
 
+
+
+
+
+   // Affichage de profil
+
+   if(isset($_GET['profile']) && $_GET['profile'] !=""){
+
+         $userId = $_GET['profile'];
+
+            $maRequeteProfile = "SELECT * FROM users WHERE id = '$userId'";
+
+            $resultatRequeteProfil = mysqli_query($maConnection, $maRequeteProfile);
+
+            
+
+
+   }
+
+
+
+
+
+
     //Suppression d'un article
+
+
+$isOwner = false;
+
+
+
 
     if(isset($_POST['idSuppression'])){
 
       $idASupprimer = $_POST['idSuppression'];
+
+
+      if($isLoggedIn && verifyOwnership($_SESSION['userId'], $idASupprimer, $maConnection) ){
+
 
       $maRequeteDeSuppression = "DELETE FROM posts WHERE id=$idASupprimer";
 
       $maSuppression= mysqli_query($maConnection, $maRequeteDeSuppression);
 
       header("Location: ../index.php");
+
+      }else{
+         header("Location: ../index.php?info=pasLeDroit");
+
+      }
+
 
     }
    
@@ -37,8 +79,8 @@ require_once dirname(__FILE__)."/../access/db.php";
       //on doit refaire passer l'ID par le biais d'un input supplémentaire dans le
             $idArticleAModifier = $_POST['idAModifier'];
 
-          //  if($isLoggedIn && verifyOwnership($userId, $authorId) ){
-           if($isLoggedIn && verifyOwnership() ){
+          //  if($isLoggedIn && verifyOwnership($userId, $postId) ){
+           if($isLoggedIn && verifyOwnership($_SESSION['userId'], $idArticleAModifier, $maConnection) ){
 
 
             
@@ -97,7 +139,14 @@ require_once dirname(__FILE__)."/../access/db.php";
            }else{
             $postId = $_POST['postId'];
            }
-               
+         if($isLoggedIn){
+
+            if(verifyOwnership($_SESSION['userId'], $postId, $maConnection)){
+
+            $isOwner = true;
+           }
+         }     
+           
            
             
 
@@ -137,15 +186,36 @@ require_once dirname(__FILE__)."/../access/db.php";
 
 
 
-     // function verifyOwnership($userId, $authorId){
+      function verifyOwnership($userId, $postId, $maConnection){
 
-         function verifyOwnership(){
-
+      
          //on veut comparer l'userId au author_id
+
+         //a partir du postId faire une requete SQL pour récurérer l'author_id
+         //et comparer l'userId de la session à cet author_id récupéré directement depuis la BDD
          //et regler $ownerVerified sur true ou false en fonction de cela
 
 
-            $ownerVerified = true;
+            $maRequeteDeVerification = "SELECT * FROM posts WHERE id = '$postId'";
+
+
+
+               $resultatRequeteVerification = mysqli_query($maConnection, $maRequeteDeVerification);
+
+               foreach($resultatRequeteVerification as $value){
+                  $authorId = $value['author_id'];
+
+               }
+
+               $ownerVerified = false;
+
+               if($userId == $authorId){
+
+                  $ownerVerified = true;
+               }
+
+
+            
 
 
 
