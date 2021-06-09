@@ -37,7 +37,7 @@
                 <button class="btn btn-dark" name="modeConnect" value="on">Connecte/Inscription</button>
                 <?php } if(isset($_SESSION["userIdLog"])){?>
                     <form action="" method="post"><button class="btn btn-outline-dark" name="modeDeco" value="on">Se déconnecter</button></form>
-                    <form action="" method="post"><button class="btn btn-dark" type="submit" name="userId" value="<?php echo $_SESSION["userIdLog"] ?>">Profils de <?php echo $_SESSION["userNameLog"]; ?></button></form>
+                    <form action="" method="post"><button class="btn btn-dark" type="submit" name="userId" value="<?php echo $_SESSION["userIdLog"] ?>">Votre Profils <?php echo $_SESSION["userNameLog"]; ?></button></form>
                     <form action="" method="post"><button class="btn btn-dark" type="submit" name="modeCreate" value="on">Céer un article</button></form>
                     <form action="" method="POST"><button type="submit" name="myPosts" class="btn btn-dark" >Mes Posts</button></form>
                 <?php } ?>
