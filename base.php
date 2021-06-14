@@ -100,6 +100,10 @@ if(isset($_POST['postId'])){
     $requetePostsId = "SELECT * FROM posts WHERE id=$postId";
 
     $resultRequetePostsId = mysqli_query($connectDB, $requetePostsId);
+    
+    $requetePostsCom = "SELECT * FROM comments WHERE post=$postId";
+
+    $resultRequetePostsCom = mysqli_query($connectDB, $requetePostsCom);
 
 } else if(isset($_GET['postId'])){
 
@@ -109,6 +113,9 @@ if(isset($_POST['postId'])){
 
     $resultRequetePostsId = mysqli_query($connectDB, $requetePostsId);
 
+    $requetePostsCom = "SELECT * FROM comments WHERE post=$postId";
+
+    $resultRequetePostsCom = mysqli_query($connectDB, $requetePostsCom);
 } else{
 
     $requetePosts = "SELECT * FROM posts";
@@ -177,14 +184,12 @@ if(isset($_POST['userIdEditMdp']) && isset($_POST['OldMdp']) && isset($_POST['Ne
         echo "les deux mots de passe ne matchent pas";
     }
 }
+if(isset($_POST['comment'])){
+    $comment = $_POST['comment'];
+    $postId = $_GET['postId'];
+    $userId = $_SESSION['userIdLog'];
 
-
-
-
-
-
-
-
-
-
+    $requeteComAdd = "INSERT INTO comments(content, author, post) VALUES ('$comment', '$userId', '$postId' )";
+    $resultRequeteComAdd = mysqli_query($connectDB, $requeteComAdd);
+}
 ?>

@@ -149,8 +149,31 @@
                             <?php } ?></h6>
                     <p> Date de création : <?php echo $value["date"]; ?></p>
                     <form method="GET"><button class="btn btn-outline-danger" type="submit">retour</button></form>
+
                     <?php if (isset($_SESSION["userIdLog"]) && $postUserId == $_SESSION["userIdLog"]) { ?>
                         <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modeEdit" value="<?php echo $value["id"]; ?>">Edit</button></form>
+                    <?php } ?>
+                    <hr>
+                    <?php if(isset($_SESSION["userIdLog"])){?>
+                        <h5>Mettre un commentaire</h5>
+                        <div class="row">
+                            <form action="" method="post">
+                                <div class="form-group"><input type="text" name="comment" id="" class="form-control" placeholder="Votre commentaire"></div>
+                                <div class="form-group"><button type="submit" class="btn btn-danger">Poster le commentaire</button></div>
+                            </form>
+                        </div>
+                        <hr>
+                    <?php } ?>
+                    <h6>les commentaires</h6>
+                    <?php foreach($resultRequetePostsCom as $value){
+                                    $postUserId = $value["author"];
+                                    $requetePostsUsers = "SELECT * FROM users WHERE id=$postUserId";
+                                    $resultRequetePostsUsers = mysqli_query($connectDB, $requetePostsUsers);
+                                    foreach($resultRequetePostsUsers as $valueUsers){?>
+                                        <hr>
+                                        <h6> De : <?php echo $valueUsers["username"] ?> à <?php echo $value["date"]; ?></h6>
+                                    <?php } ?>
+                        <p><?php echo $value["content"]; ?></p>
                     <?php } } }else if($modeEdit == true) {
                 foreach($resultRequetePostsIdEdit as $value){?>
                     <form action="" method="post">
