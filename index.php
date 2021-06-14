@@ -148,11 +148,15 @@
                             <a style="color: white" href="index.php?profile=<?php echo $valueUsers["id"] ?>"> <?php echo $valueUsers["username"] ?></a>
                             <?php } ?></h6>
                     <p> Date de création : <?php echo $value["date"]; ?></p>
+                    <p> statue : <?php if($value['publish'] == 0){?> public <?php } else {?>prive<?php }?></p>
                     <form method="GET"><button class="btn btn-outline-danger" type="submit">retour</button></form>
-
                     <?php if (isset($_SESSION["userIdLog"]) && $postUserId == $_SESSION["userIdLog"]) { ?>
                         <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modeEdit" value="<?php echo $value["id"]; ?>">Edit</button></form>
-                    <?php } ?>
+                        <?php if($value['publish'] == 0){ ?>
+                        <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modePrivate" value="<?php echo $value["id"]; ?>">Mettre en privé</button></form>
+                        <?php } else { ?>
+                        <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modePublic" value="<?php echo $value["id"]; ?>">Mettre en public</button></form>
+                    <?php } } ?>
                     <hr>
                     <?php if(isset($_SESSION["userIdLog"])){?>
                         <h5>Mettre un commentaire</h5>
@@ -285,7 +289,9 @@
                          </form>
             <?php  } } else { ?>
                 <h1> Voici les article du site</h1>
-                <?php foreach($resultRequetePosts as $value){ ?>
+                <?php foreach($resultRequetePosts as $value){
+
+                    if($value['publish'] == 0){?>
                     <div class="col-4">
                         <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
                             <div class="card-header"><?php echo $value["id"]; ?> : <?php echo $value["title"]; ?></div>
@@ -309,7 +315,7 @@
                             </form>
                         </div>
                     </div>
-                <?php } }?>
+                <?php } } }?>
         </div>
     </div>
 <?php } ?>

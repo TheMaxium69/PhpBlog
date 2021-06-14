@@ -37,6 +37,16 @@ if(isset($_POST['modeEdit']) && $_POST['modeEdit']){
     $requetePostsIdEdit = "SELECT * FROM posts WHERE id=$idPostEdit";
     $resultRequetePostsIdEdit = mysqli_query($connectDB, $requetePostsIdEdit);
 }
+if(isset($_POST['modePrivate']) && $_POST['modePrivate']){
+    $idPostPrivate = $_POST['modePrivate'];
+    $requetePostsPrivate = "UPDATE posts SET publish=1 WHERE id=$idPostPrivate";
+    $resultRequetePostsPrivate = mysqli_query($connectDB, $requetePostsPrivate);
+}
+if(isset($_POST['modePublic']) && $_POST['modePublic']){
+    $idPostPublic = $_POST['modePublic'];
+    $requetePostsPublic = "UPDATE posts SET publish=0 WHERE id=$idPostPublic";
+    $resultRequetePostsPublic = mysqli_query($connectDB, $requetePostsPublic);
+}
 if(isset($_POST['idEditUp']) && isset($_POST['titleEditUp']) && isset($_POST['contentEditUp'])){
 
     $idEditUp = $_POST['idEditUp'];
@@ -100,7 +110,7 @@ if(isset($_POST['postId'])){
     $requetePostsId = "SELECT * FROM posts WHERE id=$postId";
 
     $resultRequetePostsId = mysqli_query($connectDB, $requetePostsId);
-    
+
     $requetePostsCom = "SELECT * FROM comments WHERE post=$postId";
 
     $resultRequetePostsCom = mysqli_query($connectDB, $requetePostsCom);
