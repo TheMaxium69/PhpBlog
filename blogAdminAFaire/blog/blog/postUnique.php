@@ -66,7 +66,29 @@
             <form action="edition.php" method="post">
               <button type="submit" name="postId" value="<?php echo $value['id']?>" class="btn btn-primary">Modifier</button>
             </form>
+
+     <form action="" method="post">
+      <input type="hidden" name="userId" value ="<?php echo $_SESSION['userId'] ?>">
+<?php if($value['published']){?>
+
+
+               <button type="submit" name="unPublish" value="<?php echo $value['id']?>" class="btn btn-danger">dé-publier</button>
+
+       
+           
+        <?php }else{?>   
+
+              <button type="submit" name="publish" value="<?php echo $value['id']?>" class="btn btn-success">Publier</button>
+
+
+        <?php } ?>
+           
+            </form>
+
             </div>
+
+
+
      <?php } ?>
 
 <?php }?>
@@ -80,9 +102,11 @@
     <div class="row">
           <form action="" method="post">
           <div class="form-group">
-             <input type="text" name="comment" id="" class="form-control" placeholder="Votre commentaire">
+             <input type="text" name="comment" class="form-control" placeholder="Votre commentaire">
           </div>
-       
+            <input type="hidden" name="postToComment" value="<?php echo $postId ?>">
+            <input type="hidden" name="commentAuthor" value="<?php echo $_SESSION['userId'] ?>">
+
           <div class="form-group">
                       <button type="submit" class="btn btn-success">Poster le commentaire</button>
 

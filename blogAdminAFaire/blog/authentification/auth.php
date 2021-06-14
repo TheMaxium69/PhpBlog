@@ -6,16 +6,22 @@
 $modeInscription = false;
 
 $isLoggedIn = false;
+$isAdmin = false;
 $leSecret = "non mais c'est un secret";
 
 if(isset($_SESSION['userId'])){
     $isLoggedIn = true;
-}
 
+
+
+}
+if(isset($_SESSION['role'])&&$_SESSION['role']=='admin'){
+    $isAdmin = true;
+}
 
 if($isLoggedIn){
 
-    echo "LOGGED IN";
+  //  echo "LOGGED IN";
 
 }else{
     require_once "login.php";

@@ -12,6 +12,8 @@ if (isset($_POST['username']) && isset($_POST['password'])){
                 $userId =  $value['id'];
                 $userName =  $value['username'];
                 $userDisName =  $value['displayname'];
+                $userEmail = $value['email'];
+                $userRole = $value['role'];
             }
             require_once "base.php";
             if( md5($passwordEntre).md5($key) == $vraiMotDePasse  ){
@@ -19,6 +21,8 @@ if (isset($_POST['username']) && isset($_POST['password'])){
                 $_SESSION["userIdLog"]= $userId;
                 $_SESSION["userNameLog"]= $userName;
                 $_SESSION["userDisNameLog"]= $userDisName;
+                $_SESSION["userEmailLog"]= $userEmail;
+                $_SESSION["userRoleLog"]= $userRole;
                 header("location: index.php?info=login");
             }else{
                 echo "mauvais mot de passe, $usernameEntre";

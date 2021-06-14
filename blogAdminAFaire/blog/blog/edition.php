@@ -25,7 +25,7 @@
                     <input type="hidden" name="postPic" value="upload">
 
                     <input type="hidden" name="postId" value="<?php echo $value['id'] ?>">
-                    <input type="hidden" name="authorId" value="<?php echo $value['author'] ?>">
+                    <input type="hidden" name="authorId" value="<?php echo $value['author_id'] ?>">
 
                     <input type="file" name="postPictureToUpload">
                     <button type="submit" class="btn btn-primary">Envoyer la photo</button>

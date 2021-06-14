@@ -5,7 +5,7 @@ if(isset($_POST['logOut'])){
    session_unset();
 } 
 
-$racineSite = "http://localhost/PhpBlog/blog";
+$racineSite = "http://localhost/PhpBlog/BlogAdminAfaire/blog/";
 
 
 require_once dirname(__FILE__)."/../authentification/auth.php";
@@ -507,7 +507,10 @@ if( isset($_POST['profilePic']) && $_POST['profilePic'] == 'upload'){
             $userId = $_SESSION['userId'];
 
             echo "on est bien dans le cas MES POSTS";
-        $maRequete = "SELECT * FROM posts WHERE author = '$userId'";
+        $maRequete = "SELECT posts.image, posts.title, posts.content, posts.id, posts.author,posts.published, users.displayname, users.username
+        FROM posts
+        INNER JOIN users
+        ON users.id = posts.author";
 
         $leResultatDeMaRequete = mysqli_query($maConnection, $maRequete);
 
@@ -522,7 +525,8 @@ if( isset($_POST['profilePic']) && $_POST['profilePic'] == 'upload'){
         $maRequete = "SELECT posts.image, posts.title, posts.content, posts.id, posts.author, users.displayname, users.username
                      FROM posts
                      INNER JOIN users
-                     ON users.id = posts.author";
+                     ON users.id = posts.author
+                     WHERE posts.published = 1";
 
         $leResultatDeMaRequete = mysqli_query($maConnection, $maRequete);
 
@@ -531,6 +535,85 @@ if( isset($_POST['profilePic']) && $_POST['profilePic'] == 'upload'){
 
 
      }
+
+     //publier
+      if (isset($_POST['publish']) && $_POST['publish']!=""){
+               $post = $_POST['publish'];
+               $author = $_POST['userId'];
+
+
+               if(      $isLoggedIn 
+                     && $author == $_SESSION['userId'] 
+                     && verifyOwnership($author, $post, $maConnection) ){
+
+                           $requetePubli = "UPDATE posts SET published = '1' WHERE id = '$post'";
+                           $resultatPubli = mysqli_query($maConnection, $requetePubli);
+                           if($resultatPubli){
+
+                              header("Location: postUnique.php?postId=$post");
+                           }
+
+               }
+
+
+
+
+      }
+//dé-publier
+      if (isset($_POST['unPublish']) && $_POST['unPublish']!=""){
+               $post = $_POST['unPublish'];
+               $author = $_POST['userId'];
+
+
+               if(      $isLoggedIn 
+                     && $author == $_SESSION['userId'] 
+                     && verifyOwnership($author, $post, $maConnection) ){
+
+                           $requetePubli = "UPDATE posts SET published = '0' WHERE id = '$post'";
+                           $resultatPubli = mysqli_query($maConnection, $requetePubli);
+                           if($resultatPubli){
+
+                              header("Location: postUnique.php?postId=$post");
+                           }
+
+               }
+
+
+
+
+      }
+
+
+     // poster un commentaire
+
+     if(isset($_POST['comment']) && $_POST['comment'] != "" && $isLoggedIn){
+
+         $commentContent = $_POST['comment'];
+         $postToComment =  $_POST['postToComment'];
+         $commentAuthor = $_POST['commentAuthor'];
+
+         if($commentAuthor == $_SESSION['userId'] && $postToComment != ""){
+
+               $maRequete = "INSERT INTO comments(content, author_id, post_id) 
+               VALUES ('$commentContent', '$commentAuthor', '$postToComment')";
+
+               $resultat = mysqli_query($maConnection, $maRequete);
+
+               if($resultat){
+
+                 header("Location: postUnique.php?postId=$postToComment&info=commented"); 
+               }else{
+                  die(mysqli_error($maConnection));
+               }
+
+         }
+
+      //   
+
+    //  
+     }
+
+
 
 
 
@@ -592,11 +675,11 @@ if( isset($_POST['profilePic']) && $_POST['profilePic'] == 'upload'){
     
       function getCommentsByPostId($postId, $maConnection){
 
-            $maREqueteComments = "SELECT comments.content, users.displayname, users.username 
+            $maREqueteComments = "SELECT comments.content, users.display_name, users.username 
                                  FROM comments 
                                  INNER JOIN users
-                                 ON comments.author = users.id
-                                 WHERE comments.post = '$postId'";
+                                 ON comments.author_id = users.id
+                                 WHERE comments.post_id = '$postId'";
             
             $resultatRequeteComments = mysqli_query($maConnection, $maREqueteComments);
 

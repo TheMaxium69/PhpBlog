@@ -12,6 +12,7 @@ $modeConnect = false;
 $modeEdit = false;
 $modeCreate = false;
 $modeUserEdit = false;
+$modeAdmin = false;
 
 if(isset($_POST['modeConnect']) && $_POST['modeConnect']== "on"){
     $modeConnect = true;
@@ -64,7 +65,7 @@ if(isset($_POST['authorIdCreate']) && isset($_POST['titleCreate']) && isset($_PO
     $titleCreate = $_POST['titleCreate'];
     $contentCreate = $_POST['contentCreate'];
 
-    $requeteCreate = "INSERT INTO posts(title, content, author) VALUES ('$titleCreate', '$contentCreate', '$authorIdCreate')";
+    $requeteCreate = "INSERT INTO posts(title, content, author, publish) VALUES ('$titleCreate', '$contentCreate', '$authorIdCreate', 0)";
 
     $resultCreate = mysqli_query($connectDB, $requeteCreate);
 
@@ -203,3 +204,4 @@ if(isset($_POST['comment'])){
     $resultRequeteComAdd = mysqli_query($connectDB, $requeteComAdd);
 }
 ?>
+

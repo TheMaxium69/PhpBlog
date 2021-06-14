@@ -112,7 +112,14 @@ Successfully registered !
                                <h4 style="color : black" class="card-title"><a style="color : black" href="<?php echo $racineSite ?>/blog/profile.php?profile=<?php echo $post['author'] ?>"> Auteur : <?php if($post["displayname"] != ""){ echo $post["displayname"];}else{echo $post['username'];} ?></a></h4>
                                 <p class="card-text"><?php echo $post["content"]; ?></p>
                             </div>
-                            
+                            <?php if(isset($post['published'])){
+                                   if($post['published']){?>
+                                          <span class="badge bg-success">Published</span>
+
+                               <?php   }else{?>
+                                <span class="badge bg-secondary">non-published</span>
+
+                            <?php } } ?>
                                  <a href ="blog/postUnique.php?postId=<?php echo $post['id'] ?>" class="btn btn-success">Voir l'article</a>
 
                            

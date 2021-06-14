@@ -40,6 +40,7 @@ echo "login fonctionnel";
                                 $displayName = $value['display_name'];
 
                                 $username = $value['username'];
+                                $role = $value['role'];
                               
                                 
                                     
@@ -51,6 +52,7 @@ echo "login fonctionnel";
 
                             // echo "bon mot de passe";
                             $isLoggedIn = true;
+                            
                            
                             $_SESSION['userId'] = $userId;  
                             $_SESSION['username'] = $username;
@@ -58,7 +60,11 @@ echo "login fonctionnel";
                            
                             
                             echo "LOGGED IN";
-                           
+                            if($role == 'admin'){
+
+                                $isAdmin = true;
+                                $_SESSION['role'] = 'admin';
+                            }
 
 
                         }else{

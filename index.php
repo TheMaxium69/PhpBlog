@@ -46,6 +46,14 @@
         </div>
     </div>
 </nav>
+<div style="background: #3E3E3E; color: white; text-align: center">
+    <?php
+    if (isset($_SESSION['userRoleLog']) && $_SESSION['userRoleLog'] == "admin"){
+        $modeAdmin = true;
+        echo "PANEL ADMINISTRATION <br> Bonjour Monsieur l'Admin" ;
+    }
+    ?>
+</div>
 <?php if(!$connectDB){ ?>
 <div class='alert alert-dismissible alert-warning'>
     <button type='button' class='btn-close' data-bs-dismiss='alert'></button>
@@ -150,13 +158,20 @@
                     <p> Date de création : <?php echo $value["date"]; ?></p>
                     <p> statue : <?php if($value['publish'] == 0){?> public <?php } else {?>prive<?php }?></p>
                     <form method="GET"><button class="btn btn-outline-danger" type="submit">retour</button></form>
-                    <?php if (isset($_SESSION["userIdLog"]) && $postUserId == $_SESSION["userIdLog"]) { ?>
+                    <?php if (isset($_SESSION["userIdLog"]) && $postUserId == $_SESSION["userIdLog"] && $_SESSION["userRoleLog"] != "admin" ) { ?>
                         <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modeEdit" value="<?php echo $value["id"]; ?>">Edit</button></form>
                         <?php if($value['publish'] == 0){ ?>
                         <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modePrivate" value="<?php echo $value["id"]; ?>">Mettre en privé</button></form>
                         <?php } else { ?>
                         <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modePublic" value="<?php echo $value["id"]; ?>">Mettre en public</button></form>
                     <?php } } ?>
+                    <?php if ($modeAdmin == true && $_SESSION["userRoleLog"] == "admin") { ?>
+                        <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modeEdit" value="<?php echo $value["id"]; ?>">Edit [Admin]</button></form>
+                        <?php if($value['publish'] == 0){ ?>
+                            <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modePrivate" value="<?php echo $value["id"]; ?>">Mettre en privé [Admin]</button></form>
+                        <?php } else { ?>
+                            <form action="index.php" method="post"><button class="btn btn-danger" type="submit" name="modePublic" value="<?php echo $value["id"]; ?>">Mettre en public [Admin]</button></form>
+                        <?php } } ?>
                     <hr>
                     <?php if(isset($_SESSION["userIdLog"])){?>
                         <h5>Mettre un commentaire</h5>

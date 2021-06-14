@@ -70,7 +70,7 @@ merci d'utiliser des images aux formats jpg/jpeg/png
                     <img src="../images/profiles/<?php echo $value['image']?>">
 
                     <h2>Ici le username : <?php echo $value['username'] ?>  </h2>
-                    <h2>Ici le display name : <?php echo $value['displayname'] ?>  </h2>
+                    <h2>Ici le display name : <?php echo $value['display_name'] ?>  </h2>
 
                     <h2>ici l'email : <?php echo $value['email'] ?></h2>
 
