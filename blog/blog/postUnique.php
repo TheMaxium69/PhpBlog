@@ -40,6 +40,10 @@
 <?php
     foreach($leResultatDeMaRequeteArticleUnique as $value){?>
                   
+        <div class="row text-center">
+            <img src="../images/posts/<?php echo $value['image'] ?>" alt="" srcset="">
+        </div>
+
                   <div class="row text-center">
                   
                     <h2><?php echo $value["title"];?></h2>
@@ -71,11 +75,40 @@
     
             <a href="/hb/blog" class="btn btn-danger">Retour a l'accueil</a>
     </div>
+
+  <?php if($isLoggedIn){?>
+    <div class="row">
+          <form action="" method="post">
+          <div class="form-group">
+             <input type="text" name="comment" id="" class="form-control" placeholder="Votre commentaire">
+          </div>
+       
+          <div class="form-group">
+                      <button type="submit" class="btn btn-success">Poster le commentaire</button>
+
+          </div>
+          </form> 
+    </div>
+    <?php }?>
+
+
+
+
+
+    <hr>
+          <?php  foreach($mesCommentaires as $comment){ ?>
     
+              <div class="row">
+                <p><strong>  <?php if($comment["display_name"] != ""){ echo $comment["display_name"];}else{echo $comment['username'];} ?> </strong></p>
+              
+                  <p>  <?php echo $comment['content'];?>  </p>
+              </div>
+              <hr>
+
+
+            <?php } ?>
     
-    
-    
-    
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
 </body>
 </html>

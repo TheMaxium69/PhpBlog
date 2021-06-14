@@ -19,13 +19,17 @@
         </li>
         <li>
         
-        <form action="index.php" method="POST" class="d-flex">
+        <form action="<?php echo $racineSite ?>/index.php" method="POST" class="d-flex">
  
   <button type="submit" name="myPosts" class="btn btn-secondary my-2 my-sm-0" >Mes Posts</button>
 </form>
 
         
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo $racineSite ?>/blog/profile.php?profile=<?php echo $_SESSION['userId']?>">Mon Profil</a>
+        </li>
+        <li>
                 <?php } ?>
       
       </ul>

@@ -31,7 +31,7 @@
                             require_once dirname(__FILE__)."/../access/salt.php";
                             $passwordEntreCrypteSaleCrypte = $passwordEntreCrypte.md5($salt);
                                 
-                            $maRequeteInscription = "INSERT INTO users (username, password) VALUES ('$usernameEntre', '$passwordEntreCrypteSaleCrypte')";
+                            $maRequeteInscription = "INSERT INTO users (username, password, image) VALUES ('$usernameEntre', '$passwordEntreCrypteSaleCrypte', 'default.png')";
                             $resultatInscription = mysqli_query($maConnection, $maRequeteInscription);
                             
                                 if($resultatInscription){

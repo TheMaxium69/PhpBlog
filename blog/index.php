@@ -31,9 +31,22 @@ Successfully registered !
 
 <div class="alert alert-dismissible alert-success">
   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  <strong>Well done!</strong> You successfully posted <a href="#" class="alert-link">a new article</a>.
+  <strong>Well done!</strong> You successfully posted with a picture<a href="#" class="alert-link">a new article</a>.
 </div>
 <?php } ?>
+<?php if( isset($_GET['info']) && $_GET['info'] == 'default' ){?>
+
+<div class="alert alert-dismissible alert-success">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Well done!</strong> You successfully posted but no picture<a href="#" class="alert-link">a new article</a>.
+</div>
+<?php } ?>
+
+
+
+
+
+
 <?php if( isset($_GET['info']) && $_GET['info'] == 'deleted' ){?>
 
 <div class="alert alert-dismissible alert-danger">
@@ -92,9 +105,11 @@ Successfully registered !
                     <div class="col-4">
                     
                             <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
+                            <img src="images/posts/<?php echo $post['image']?>" alt="">
+
                             <div class="card-header"><?php echo $post["title"]; ?></div>
                             <div class="card-body">
-                               <h4 style="color : black" class="card-title"><a style="color : black" href="<?php echo $racineSite ?>/blog/profile.php?profile=<?php echo $post['author'] ?>"> Auteur : <?php echo $post["author"] ?></a></h4>
+                               <h4 style="color : black" class="card-title"><a style="color : black" href="<?php echo $racineSite ?>/blog/profile.php?profile=<?php echo $post['author'] ?>"> Auteur : <?php if($post["displayname"] != ""){ echo $post["displayname"];}else{echo $post['username'];} ?></a></h4>
                                 <p class="card-text"><?php echo $post["content"]; ?></p>
                             </div>
                             

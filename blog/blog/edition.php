@@ -18,6 +18,18 @@
                 <?php
     foreach($leResultatDeMaRequeteArticleUnique as $value){?>
 
+    <img src="../images/posts/<?php echo $value['image']?>" alt="" srcset="">
+<p>modifier la photo :</p>
+            <form action="" method="POST" enctype="multipart/form-data">
+
+                    <input type="hidden" name="postPic" value="upload">
+
+                    <input type="hidden" name="postId" value="<?php echo $value['id'] ?>">
+                    <input type="hidden" name="authorId" value="<?php echo $value['author'] ?>">
+
+                    <input type="file" name="postPictureToUpload">
+                    <button type="submit" class="btn btn-primary">Envoyer la photo</button>
+            </form>
 
                     <form action="" method="POST">
 
@@ -50,6 +62,7 @@
                 </div>
             </div>
 
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 
 </body>
 </html>
